@@ -10,7 +10,7 @@ includes: [resizableArrayBufferUtils.js]
 features: [resizable-arraybuffer]
 ---*/
 
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
@@ -84,4 +84,4 @@ for (let ctor of ctors) {
   assert.sameValue(Array.prototype.find.call(fixedLengthWithOffset, isTwoOrFour), undefined);
   assert.sameValue(Number(Array.prototype.find.call(lengthTracking, isTwoOrFour)), 2);
   assert.sameValue(Number(Array.prototype.find.call(lengthTrackingWithOffset, isTwoOrFour)), 2);
-}
+});

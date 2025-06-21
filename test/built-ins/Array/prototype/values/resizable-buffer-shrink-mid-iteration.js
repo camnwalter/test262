@@ -24,14 +24,14 @@ for (let ctor of ctors) {
     TestIterationAndResize(Array.prototype.values.call(fixedLength), null, rab, 2, 3 * ctor.BYTES_PER_ELEMENT);
   });
 }
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
   assert.throws(TypeError, () => {
     TestIterationAndResize(Array.prototype.values.call(fixedLengthWithOffset), null, rab, 2, 3 * ctor.BYTES_PER_ELEMENT);
   });
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
   TestIterationAndResize(Array.prototype.values.call(lengthTracking), [
@@ -39,7 +39,7 @@ for (let ctor of ctors) {
     2,
     4
   ], rab, 2, 3 * ctor.BYTES_PER_ELEMENT);
-}
+});
 for (let ctor of ctors) {
   const rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);

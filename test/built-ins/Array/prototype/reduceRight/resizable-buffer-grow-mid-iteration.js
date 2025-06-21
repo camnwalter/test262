@@ -29,7 +29,7 @@ function ResizeBufferMidIteration(acc, n) {
 //              [0, 2, 4, 6, ...] << lengthTracking
 //                    [4, 6, ...] << lengthTrackingWithOffset
 
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   values = [];
   rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
@@ -42,8 +42,8 @@ for (let ctor of ctors) {
     2,
     0
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   values = [];
   rab = CreateRabForTest(ctor);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
@@ -54,8 +54,8 @@ for (let ctor of ctors) {
     6,
     4
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   values = [];
   rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
@@ -68,8 +68,8 @@ for (let ctor of ctors) {
     2,
     0
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   values = [];
   rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
@@ -80,4 +80,4 @@ for (let ctor of ctors) {
     6,
     4
   ]);
-}
+});

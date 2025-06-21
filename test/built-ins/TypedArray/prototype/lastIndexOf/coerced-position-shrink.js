@@ -11,7 +11,7 @@ features: [resizable-arraybuffer]
 ---*/
 
 // Shrinking + fixed-length TA.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -24,8 +24,8 @@ for (let ctor of ctors) {
   assert.sameValue(fixedLength.lastIndexOf(n0), 3);
   // The TA is OOB so lastIndexOf returns -1.
   assert.sameValue(fixedLength.lastIndexOf(n0, evil), -1);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -38,10 +38,10 @@ for (let ctor of ctors) {
   assert.sameValue(fixedLength.lastIndexOf(n0), 3);
   // The TA is OOB so lastIndexOf returns -1, also for undefined).
   assert.sameValue(fixedLength.lastIndexOf(undefined, evil), -1);
-}
+});
 
 // Shrinking + length-tracking TA.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -57,4 +57,4 @@ for (let ctor of ctors) {
   assert.sameValue(lengthTracking.lastIndexOf(n2), 2);
   // 2 no longer found.
   assert.sameValue(lengthTracking.lastIndexOf(n2, evil), -1);
-}
+});

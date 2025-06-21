@@ -12,8 +12,8 @@ features: [resizable-arraybuffer]
 
 const rab = CreateResizableArrayBuffer(40, 80);
 const ab = new ArrayBuffer(80);
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const ta_rab = new ctor(rab, 0, 3);
   const ta_ab = new ctor(ab, 0, 3);
   assert.sameValue(ta_ab.__proto__, ta_rab.__proto__);
-}
+});

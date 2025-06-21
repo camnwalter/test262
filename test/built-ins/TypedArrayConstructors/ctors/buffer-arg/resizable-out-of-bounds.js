@@ -11,7 +11,7 @@ features: [resizable-arraybuffer]
 ---*/
 
 const rab = CreateResizableArrayBuffer(40, 80);
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   // Length too big.
   assert.throws(RangeError, () => {
     new ctor(rab, 0, 40 / ctor.BYTES_PER_ELEMENT + 1);
@@ -33,4 +33,4 @@ for (let ctor of ctors) {
       new ctor(rab, 1);
     });
   }
-}
+});

@@ -14,13 +14,13 @@ const rab = CreateResizableArrayBuffer(20, 40);
 
 // Create TAs which cover the bytes 8-15.
 let tas_and_lengths = [];
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const length = 8 / ctor.BYTES_PER_ELEMENT;
   tas_and_lengths.push([
     new ctor(rab, 8, length),
     length
   ]);
-}
+});
 for (let [ta, length] of tas_and_lengths) {
   assert.sameValue(ta.byteOffset, 8);
 }

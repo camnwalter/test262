@@ -17,7 +17,7 @@ features: [resizable-arraybuffer]
 
 // Fixed-length TA + first parameter conversion shrinks. The old length is
 // used in the length computation, and the subarray construction fails.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -29,11 +29,11 @@ for (let ctor of ctors) {
   assert.throws(RangeError, () => {
     fixedLength.subarray(evil);
   });
-}
+});
 
 // Like the previous test, but now we construct a smaller subarray and it
 // succeeds.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -43,10 +43,10 @@ for (let ctor of ctors) {
     }
   };
   assert.compareArray(ToNumbers(fixedLength.subarray(evil, 1)), [0]);
-}
+});
 
 // As above but with the second parameter conversion shrinking the buffer.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -56,11 +56,11 @@ for (let ctor of ctors) {
     }
   };
   assert.compareArray(ToNumbers(fixedLength.subarray(0,evil)), [0]);
-}
+});
 
 // Fixed-length TA + second parameter conversion shrinks. The old length is
 // used in the length computation, and the subarray construction fails.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -72,11 +72,11 @@ for (let ctor of ctors) {
   assert.throws(RangeError, () => {
     fixedLength.subarray(0, evil);
   });
-}
+});
 
 // Like the previous test, but now we construct a smaller subarray and it
 // succeeds.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -86,11 +86,11 @@ for (let ctor of ctors) {
     }
   };
   assert.compareArray(ToNumbers(fixedLength.subarray(0, evil)), [0]);
-}
+});
 
 // Shrinking + fixed-length TA, subarray construction succeeds even though the
 // TA goes OOB.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   const evil = {
@@ -100,10 +100,10 @@ for (let ctor of ctors) {
     }
   };
   assert.compareArray(ToNumbers(fixedLength.subarray(evil, 1)), [0]);
-}
+});
 
 // As above but with the second parameter conversion shrinking the buffer.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   const evil = {
@@ -113,11 +113,11 @@ for (let ctor of ctors) {
     }
   };
   assert.compareArray(ToNumbers(fixedLength.subarray(0,evil)), [0]);
-}
+});
 
 // Length-tracking TA + first parameter conversion shrinks. The old length is
 // used in the length computation, and the subarray construction fails.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab);
   let evil = {
@@ -129,11 +129,11 @@ for (let ctor of ctors) {
   assert.throws(RangeError, () => {
     lengthTracking.subarray(evil, lengthTracking.length);
   });
-}
+});
 
 // Like the previous test, but now we construct a smaller subarray and it
 // succeeds.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab);
   let evil = {
@@ -143,10 +143,10 @@ for (let ctor of ctors) {
     }
   };
   assert.compareArray(ToNumbers(lengthTracking.subarray(evil, 1)), [0]);
-}
+});
 
 // As above but with the second parameter conversion shrinking the buffer.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab);
   let evil = {
@@ -156,12 +156,12 @@ for (let ctor of ctors) {
     }
   };
   assert.compareArray(ToNumbers(lengthTracking.subarray(0,evil)), [0]);
-}
+});
 
 // Length-tracking TA + first parameter conversion shrinks. The second
 // parameter is negative -> the relative index is not recomputed, and the
 // subarray construction fails.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab);
   let evil = {
@@ -173,11 +173,11 @@ for (let ctor of ctors) {
   assert.throws(RangeError, () => {
     lengthTracking.subarray(evil, -1);
   });
-}
+});
 
 // Length-tracking TA + second parameter conversion shrinks. The second
 // parameter is too large -> the subarray construction fails.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab);
   let evil = {
@@ -189,4 +189,4 @@ for (let ctor of ctors) {
   assert.throws(RangeError, () => {
     lengthTracking.subarray(0, evil);
   });
-}
+});

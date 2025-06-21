@@ -49,7 +49,7 @@ function test(ctors, { nextVal=undefined,
         return iterable;
     }
 
-    for (let ctor of ctors) {
+    testWithResizableArrayConstructors(function (ctor) {
         let iterable = getIterable();
         if (exceptionVal) {
             let caught = false;
@@ -67,7 +67,7 @@ function test(ctors, { nextVal=undefined,
         }
         assert.sameValue(iterable.closed, closed);
     }
-}
+});
 
 // == Error cases with close ==
 

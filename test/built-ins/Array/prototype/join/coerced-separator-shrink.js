@@ -11,7 +11,7 @@ features: [resizable-arraybuffer]
 ---*/
 
 // Shrinking + fixed-length TA.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -24,10 +24,10 @@ for (let ctor of ctors) {
   // OOB right after parameter conversion, so all elements are converted to
   // the empty string.
   assert.sameValue(Array.prototype.join.call(fixedLength, evil), '...');
-}
+});
 
 // Shrinking + length-tracking TA.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   let evil = {
@@ -39,4 +39,4 @@ for (let ctor of ctors) {
   // We iterate 4 elements, since it was the starting length. Elements beyond
   // the new length are converted to the empty string.
   assert.sameValue(Array.prototype.join.call(lengthTracking, evil), '0.0..');
-}
+});

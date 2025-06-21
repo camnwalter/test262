@@ -34,7 +34,7 @@ for (let ctor of ctors) {
     TestIterationAndResize(fixedLengthWithOffset.entries(), null, rab, 1, 3 * ctor.BYTES_PER_ELEMENT);
   });
 }
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
   TestIterationAndResize(lengthTracking.entries(), [
@@ -51,8 +51,8 @@ for (let ctor of ctors) {
       4
     ]
   ], rab, 2, 3 * ctor.BYTES_PER_ELEMENT);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
   TestIterationAndResize(lengthTrackingWithOffset.entries(), [
@@ -65,4 +65,4 @@ for (let ctor of ctors) {
       6
     ]
   ], rab, 2, 3 * ctor.BYTES_PER_ELEMENT);
-}
+});

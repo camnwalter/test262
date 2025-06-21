@@ -19,7 +19,7 @@ function ArrayFindHelper(ta, p) {
 //                    [4, 6] << fixedLengthWithOffset
 //              [0, 2, 4, 6, ...] << lengthTracking
 //                    [4, 6, ...] << lengthTrackingWithOffset
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   const values = [];
@@ -36,8 +36,8 @@ for (let ctor of ctors) {
     undefined,
     undefined
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
   const values = [];
@@ -52,8 +52,8 @@ for (let ctor of ctors) {
     4,
     undefined
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
   const values = [];
@@ -70,8 +70,8 @@ for (let ctor of ctors) {
     4,
     undefined
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
   const values = [];
@@ -86,4 +86,4 @@ for (let ctor of ctors) {
     4,
     undefined
   ]);
-}
+});

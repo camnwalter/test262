@@ -15,7 +15,7 @@ features: [resizable-arraybuffer]
 //              [0, 2, 4, 6, ...] << lengthTracking
 
 // Growing a fixed length TA back in bounds.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   // Make `fixedLength` OOB.
@@ -29,10 +29,10 @@ for (let ctor of ctors) {
   // The length computation is done before parameter conversion. At that
   // point, the length is 0, since the TA is OOB.
   assert.compareArray(ToNumbers(fixedLength.subarray(evil, 1)), []);
-}
+});
 
 // As above but with the second parameter conversion growing the buffer.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   // Make `fixedLength` OOB.
@@ -46,11 +46,11 @@ for (let ctor of ctors) {
   // The length computation is done before parameter conversion. At that
   // point, the length is 0, since the TA is OOB.
   assert.compareArray(ToNumbers(fixedLength.subarray(0, evil)), []);
-}
+});
 
 
 // Growing + fixed-length TA. Growing won't affect anything.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   const evil = {
@@ -65,10 +65,10 @@ for (let ctor of ctors) {
     4,
     6
   ]);
-}
+});
 
 // As above but with the second parameter conversion growing the buffer.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   const evil = {
@@ -83,11 +83,11 @@ for (let ctor of ctors) {
     4,
     6
   ]);
-}
+});
 
 // Growing + length-tracking TA. The length computation is done with the
 // original length.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
   const evil = {
@@ -103,4 +103,4 @@ for (let ctor of ctors) {
     4,
     6
   ]);
-}
+});

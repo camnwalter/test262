@@ -28,7 +28,7 @@ function CollectWithUndefined(values) {
   }
 }
 
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   let resizeWhenConstructorCalled = false;
   class MyArray extends ctor {
@@ -51,8 +51,8 @@ for (let ctor of ctors) {
     undefined
   ]);
   assert.sameValue(rab.byteLength, 2 * ctor.BYTES_PER_ELEMENT);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const taWrite = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -79,4 +79,4 @@ for (let ctor of ctors) {
     undefined
   ]);
   assert.sameValue(rab.byteLength, 2 * ctor.BYTES_PER_ELEMENT);
-}
+});

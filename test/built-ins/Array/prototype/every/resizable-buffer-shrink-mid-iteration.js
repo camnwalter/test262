@@ -29,7 +29,7 @@ function ResizeMidIteration(n) {
 //                    [4, 6] << fixedLengthWithOffset
 //              [0, 2, 4, 6, ...] << lengthTracking
 //                    [4, 6, ...] << lengthTrackingWithOffset
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   values = [];
@@ -40,8 +40,8 @@ for (let ctor of ctors) {
     0,
     2
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   rab = CreateRabForTest(ctor);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
   values = [];
@@ -49,8 +49,8 @@ for (let ctor of ctors) {
   resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
   assert(Array.prototype.every.call(fixedLengthWithOffset, ResizeMidIteration));
   assert.compareArray(values, [4]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
   values = [];
@@ -62,8 +62,8 @@ for (let ctor of ctors) {
     2,
     4
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
   values = [];
@@ -71,4 +71,4 @@ for (let ctor of ctors) {
   resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
   assert(Array.prototype.every.call(lengthTrackingWithOffset, ResizeMidIteration));
   assert.compareArray(values, [4]);
-}
+});

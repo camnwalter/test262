@@ -11,7 +11,7 @@ features: [resizable-arraybuffer]
 ---*/
 
 // The start argument shrinks the resizable array buffer rab.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   const evil = {
@@ -29,8 +29,8 @@ for (let ctor of ctors) {
   assert.compareArray(ToNumbers(Array.prototype.slice.call(fixedLength, evil)), [
   ]);
   assert.sameValue(rab.byteLength, 2 * ctor.BYTES_PER_ELEMENT);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -53,10 +53,10 @@ for (let ctor of ctors) {
     2
   ]);
   assert.sameValue(rab.byteLength, 2 * ctor.BYTES_PER_ELEMENT);
-}
+});
 
 // The end argument shrinks the resizable array buffer rab.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   const evil = {
@@ -71,8 +71,8 @@ for (let ctor of ctors) {
   assert.compareArray(ToNumbers(Array.prototype.slice.call(fixedLength, 2, evil)), [
   ]);
   assert.sameValue(rab.byteLength, 2 * ctor.BYTES_PER_ELEMENT);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -92,4 +92,4 @@ for (let ctor of ctors) {
     2
   ]);
   assert.sameValue(rab.byteLength, 2 * ctor.BYTES_PER_ELEMENT);
-}
+});

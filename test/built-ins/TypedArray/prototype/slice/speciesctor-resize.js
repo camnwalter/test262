@@ -13,7 +13,7 @@ features: [resizable-arraybuffer]
 // The corresponding test for Array.prototype.slice is not possible, since it
 // doesn't call the species constructor if the "original array" is not an Array.
 
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   let resizeWhenConstructorCalled = false;
   class MyArray extends ctor {
@@ -31,8 +31,8 @@ for (let ctor of ctors) {
     fixedLength.slice();
   });
   assert.sameValue(rab.byteLength, 2 * ctor.BYTES_PER_ELEMENT);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const taWrite = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -61,11 +61,11 @@ for (let ctor of ctors) {
     0,
     0
   ]);
-}
+});
 
 // Test that the (start, end) parameters are computed based on the original
 // length.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const taWrite = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -92,7 +92,7 @@ for (let ctor of ctors) {
     1,
     0
   ]);
-}
+});
 
 // Test where the buffer gets resized "between elements".
 {

@@ -10,7 +10,7 @@ features: [resizable-arraybuffer]
 includes: [resizableArrayBufferUtils.js]
 ---*/
 
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
@@ -28,9 +28,9 @@ for (let ctor of ctors) {
   assert.throws(TypeError, () => {
     Object.freeze(lengthTrackingWithOffset);
   });
-}
+});
 // Freezing zero-length TAs doesn't throw.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 0);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 0);
@@ -44,10 +44,10 @@ for (let ctor of ctors) {
   assert.throws(TypeError, () => {
     Object.freeze(lengthTrackingWithOffset);
   });
-}
+});
 // If the buffer has been resized to make length-tracking TAs zero-length,
 // freezing them also doesn't throw.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
@@ -59,4 +59,4 @@ for (let ctor of ctors) {
   assert.throws(TypeError, () => {
     Object.freeze(lengthTracking);
   });
-}
+});

@@ -10,7 +10,7 @@ includes: [resizableArrayBufferUtils.js]
 features: [resizable-arraybuffer, Array.prototype.includes]
 ---*/
 
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -22,8 +22,8 @@ for (let ctor of ctors) {
   assert(!Array.prototype.includes.call(fixedLength, undefined));
   // The TA is OOB so it includes only "undefined".
   assert(Array.prototype.includes.call(fixedLength, undefined, evil));
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -36,8 +36,8 @@ for (let ctor of ctors) {
   assert(Array.prototype.includes.call(fixedLength, n0));
   // The TA is OOB so it includes only "undefined".
   assert(!Array.prototype.includes.call(fixedLength, n0, evil));
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   let evil = {
@@ -49,8 +49,8 @@ for (let ctor of ctors) {
   assert(!Array.prototype.includes.call(lengthTracking, undefined));
   // "includes" iterates until the original length and sees "undefined"s.
   assert(Array.prototype.includes.call(lengthTracking, undefined, evil));
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -66,8 +66,8 @@ for (let ctor of ctors) {
   assert(!Array.prototype.includes.call(lengthTracking, n0));
   // The TA grew but we only look at the data until the original length.
   assert(!Array.prototype.includes.call(lengthTracking, n0, evil));
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   lengthTracking[0] = MayNeedBigInt(lengthTracking, 1);
@@ -82,4 +82,4 @@ for (let ctor of ctors) {
   // The TA grew but the start index conversion is done based on the original
   // length.
   assert(Array.prototype.includes.call(lengthTracking, n1, evil));
-}
+});

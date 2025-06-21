@@ -32,7 +32,7 @@ function WriteUnsortedData(taFull) {
 }
 
 // Fixed length TA.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const resizeTo = 2 * ctor.BYTES_PER_ELEMENT;
   const fixedLength = new ctor(rab, 0, 4);
@@ -44,10 +44,10 @@ for (let ctor of ctors) {
     10,
     9
   ]);
-}
+});
 
 // Length-tracking TA.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const resizeTo = 2 * ctor.BYTES_PER_ELEMENT;
   const lengthTracking = new ctor(rab, 0);
@@ -70,4 +70,4 @@ for (let ctor of ctors) {
     8,
     7
   ].includes(newData[1]));
-}
+});

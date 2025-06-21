@@ -70,6 +70,32 @@ if (typeof MyBigInt64Array !== 'undefined') {
     ctors.push(MyBigInt64Array);
 }
 
+/**
+ * Callback for testing a resizable array buffer
+ *
+ * @callback typedArrayConstructorCallback
+ * @param {Function} Constructor the constructor object to test with.
+ */
+
+/**
+ * Calls the provided function for every typed array constructor.
+ *
+ * @param {typedArrayConstructorCallback} f - the function to call for each typed array constructor.
+ * @param {Array} selected - An optional Array with filtered typed arrays
+ */
+function testWithResizableArrayConstructors(f, selected) {
+  var constructors = selected || ctors;
+  for (var i = 0; i < constructors.length; ++i) {
+    var constructor = constructors[i];
+    try {
+      f(constructor);
+    } catch (e) {
+      e.message += " (Testing with " + constructor.name + ".)";
+      throw e;
+    }
+  }
+}
+
 function CreateResizableArrayBuffer(byteLength, maxByteLength) {
   return new ArrayBuffer(byteLength, { maxByteLength: maxByteLength });
 }

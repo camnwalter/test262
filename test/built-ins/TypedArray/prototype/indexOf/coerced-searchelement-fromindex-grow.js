@@ -11,7 +11,7 @@ features: [resizable-arraybuffer]
 ---*/
 
 // Growing + length-tracking TA.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -27,10 +27,10 @@ for (let ctor of ctors) {
   assert.sameValue(lengthTracking.indexOf(n0), -1);
   // The TA grew but we only look at the data until the original length.
   assert.sameValue(lengthTracking.indexOf(n0, evil), -1);
-}
+});
 
 // Growing + length-tracking TA, index conversion.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   lengthTracking[0] = MayNeedBigInt(lengthTracking, 1);
@@ -45,4 +45,4 @@ for (let ctor of ctors) {
   // The TA grew but the start index conversion is done based on the original
   // length.
   assert.sameValue(lengthTracking.indexOf(n1, evil), 0);
-}
+});

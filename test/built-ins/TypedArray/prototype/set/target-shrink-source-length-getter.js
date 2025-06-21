@@ -30,7 +30,7 @@ function CreateSourceProxy(length, rab, resizeTo) {
 
 // Tests where the length getter returns a non-zero value -> these are nop if
 // the TA went OOB.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   const resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
@@ -40,8 +40,8 @@ for (let ctor of ctors) {
     2,
     4
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
   const resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
@@ -51,8 +51,8 @@ for (let ctor of ctors) {
     2,
     4
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
   const resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
@@ -67,8 +67,8 @@ for (let ctor of ctors) {
     2,
     4
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
   const resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
@@ -79,20 +79,20 @@ for (let ctor of ctors) {
     2,
     1
   ]);
-}
+});
 
 // Length-tracking TA goes OOB because of the offset.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
   const resizeTo = 1 * ctor.BYTES_PER_ELEMENT;
   lengthTrackingWithOffset.set(CreateSourceProxy(1, rab, resizeTo));
   assert.compareArray(ToNumbers(new ctor(rab)), [0]);
-}
+});
 
 // Tests where the length getter returns a zero -> these don't throw even if
 // the TA went OOB.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   const resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
@@ -102,8 +102,8 @@ for (let ctor of ctors) {
     2,
     4
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
   const resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
@@ -113,8 +113,8 @@ for (let ctor of ctors) {
     2,
     4
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
   const resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
@@ -124,8 +124,8 @@ for (let ctor of ctors) {
     2,
     4
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
   const resizeTo = 3 * ctor.BYTES_PER_ELEMENT;
@@ -135,13 +135,13 @@ for (let ctor of ctors) {
     2,
     4
   ]);
-}
+});
 
 // Length-tracking TA goes OOB because of the offset.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
   const resizeTo = 1 * ctor.BYTES_PER_ELEMENT;
   lengthTrackingWithOffset.set(CreateSourceProxy(0, rab, resizeTo));
   assert.compareArray(ToNumbers(new ctor(rab)), [0]);
-}
+});

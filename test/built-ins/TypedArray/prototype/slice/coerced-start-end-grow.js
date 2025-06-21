@@ -11,7 +11,7 @@ features: [resizable-arraybuffer]
 ---*/
 
 // The start argument grows the resizable array buffer rab.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -30,10 +30,10 @@ for (let ctor of ctors) {
     4
   ]);
   assert.sameValue(rab.byteLength, 6 * ctor.BYTES_PER_ELEMENT);
-}
+});
 
 // The end argument grows the resizable array buffer rab.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   for (let i = 0; i < 4; ++i) {
@@ -52,4 +52,4 @@ for (let ctor of ctors) {
     0
   ]);
   assert.sameValue(rab.byteLength, 6 * ctor.BYTES_PER_ELEMENT);
-}
+});

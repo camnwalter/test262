@@ -11,7 +11,7 @@ features: [resizable-arraybuffer]
 ---*/
 
 // Growing + fixed-length TA.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const fixedLength = new ctor(rab, 0, 4);
   let evil = {
@@ -21,10 +21,10 @@ for (let ctor of ctors) {
     }
   };
   assert.sameValue(fixedLength.join(evil), '0.0.0.0');
-}
+});
 
 // Growing + length-tracking TA.
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 8 * ctor.BYTES_PER_ELEMENT);
   const lengthTracking = new ctor(rab);
   let evil = {
@@ -35,4 +35,4 @@ for (let ctor of ctors) {
   };
   // We iterate 4 elements, since it was the starting length.
   assert.sameValue(lengthTracking.join(evil), '0.0.0.0');
-}
+});

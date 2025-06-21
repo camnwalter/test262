@@ -11,7 +11,7 @@ features: [resizable-arraybuffer]
 ---*/
 
 const rab = CreateResizableArrayBuffer(40, 80);
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const ta = new ctor(rab, 0, 3);
   assert.compareArray(ta.buffer, rab);
   assert.sameValue(ta.length, 3);
@@ -34,4 +34,4 @@ for (let ctor of ctors) {
   const empty_length_tracking_ta_with_offset = new ctor(rab, 40);
   assert.compareArray(empty_length_tracking_ta_with_offset.buffer, rab);
   assert.sameValue(empty_length_tracking_ta_with_offset.length, 0);
-}
+});

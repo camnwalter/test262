@@ -15,7 +15,7 @@ includes: [resizableArrayBufferUtils.js]
 features: [resizable-arraybuffer]
 ---*/
 
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateResizableArrayBuffer(4 * ctor.BYTES_PER_ELEMENT, 40 * ctor.BYTES_PER_ELEMENT);
   const array = new ctor(rab, 0, 4);
   // Within-bounds read
@@ -38,4 +38,4 @@ for (let ctor of ctors) {
   for (let i = 0; i < 4; ++i) {
     assert(i in array);
   }
-}
+});

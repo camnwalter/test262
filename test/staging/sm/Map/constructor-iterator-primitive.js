@@ -30,7 +30,7 @@ let primitives = [
     Symbol.iterator
 ];
 
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
     for (let primitive of primitives) {
         let arg = {
             [Symbol.iterator]() {
@@ -39,5 +39,5 @@ for (let ctor of ctors) {
         };
         assertThrowsInstanceOf(() => new ctor(arg), TypeError);
     }
-}
+});
 

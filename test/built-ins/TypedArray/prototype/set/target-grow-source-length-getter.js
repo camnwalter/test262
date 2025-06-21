@@ -30,7 +30,7 @@ function CreateSourceProxy(length, rab, resizeTo) {
 // Test that we still throw for lengthTracking TAs if the source length is
 // too large, even though we resized in the length getter (we check against
 // the original length).
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
   const resizeTo = 6 * ctor.BYTES_PER_ELEMENT;
@@ -45,8 +45,8 @@ for (let ctor of ctors) {
     0,
     0
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
   const resizeTo = 6 * ctor.BYTES_PER_ELEMENT;
@@ -61,4 +61,4 @@ for (let ctor of ctors) {
     0,
     0
   ]);
-}
+});

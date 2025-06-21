@@ -11,11 +11,11 @@ features: [resizable-arraybuffer]
 ---*/
 
 let rab = CreateResizableArrayBuffer(100, 200);
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const ta = new ctor(rab, 0, 3);
   let keys = '';
   for (const key in ta) {
     keys += key;
   }
   assert.sameValue(keys, '012');
-}
+});

@@ -31,7 +31,7 @@ function ResizeMidIteration(acc, n) {
 
 // Test for reduceRight.
 
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   values = [];
   rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
@@ -44,8 +44,8 @@ for (let ctor of ctors) {
     2,
     0
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   values = [];
   rab = CreateRabForTest(ctor);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
@@ -56,8 +56,8 @@ for (let ctor of ctors) {
     6,
     4
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   values = [];
   rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
@@ -70,8 +70,8 @@ for (let ctor of ctors) {
     2,
     0
   ]);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   values = [];
   rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
@@ -82,4 +82,4 @@ for (let ctor of ctors) {
     6,
     4
   ]);
-}
+});

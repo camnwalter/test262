@@ -17,7 +17,7 @@ features: [resizable-arraybuffer]
 //                    [4, 6, ...] << lengthTrackingWithOffset
 
 // Iterating with entries() (the 4 loops below).
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLength = new ctor(rab, 0, 4);
   // The fixed length array is not affected by resizing.
@@ -39,8 +39,8 @@ for (let ctor of ctors) {
       6
     ]
   ], rab, 2, 6 * ctor.BYTES_PER_ELEMENT);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const fixedLengthWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT, 2);
   // The fixed length array is not affected by resizing.
@@ -54,8 +54,8 @@ for (let ctor of ctors) {
       6
     ]
   ], rab, 2, 6 * ctor.BYTES_PER_ELEMENT);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTracking = new ctor(rab, 0);
   TestIterationAndResize(lengthTracking.entries(), [
@@ -84,8 +84,8 @@ for (let ctor of ctors) {
       0
     ]
   ], rab, 2, 6 * ctor.BYTES_PER_ELEMENT);
-}
-for (let ctor of ctors) {
+});
+testWithResizableArrayConstructors(function (ctor) {
   const rab = CreateRabForTest(ctor);
   const lengthTrackingWithOffset = new ctor(rab, 2 * ctor.BYTES_PER_ELEMENT);
   TestIterationAndResize(lengthTrackingWithOffset.entries(), [
@@ -106,4 +106,4 @@ for (let ctor of ctors) {
       0
     ]
   ], rab, 2, 6 * ctor.BYTES_PER_ELEMENT);
-}
+});

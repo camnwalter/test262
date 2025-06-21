@@ -12,9 +12,9 @@ features: [resizable-arraybuffer]
 
 const rab = CreateResizableArrayBuffer(16, 40);
 let tas = [];
-for (let ctor of ctors) {
+testWithResizableArrayConstructors(function (ctor) {
   tas.push(new ctor(rab));
-}
+});
 for (let ta of tas) {
   assert.sameValue(ta.length, 16 / ta.BYTES_PER_ELEMENT);
   assert.sameValue(ta.byteLength, 16);
